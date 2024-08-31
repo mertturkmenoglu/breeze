@@ -1,5 +1,25 @@
 package views
 
 templ Hello(name string) {
-  <div>Hello {name} how you doing?</div>
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<meta
+				name="description"
+				content="Breeze"
+			/>
+			<meta name="google" content="notranslate"/>
+			<link rel="shortcut icon" href="/assets/img/icon.png" type="image/png"/>
+			<link rel="stylesheet" href="/assets/css/main.css" type="text/css"/>
+			<title>Breeze</title>
+			<script src="/assets/js/htmx.min.js"></script>
+		</head>
+		<body hx-boost="true">
+			<main class="p-16">
+				<div class="font-bold text-3xl">Hello { name } how you doing?</div>
+			</main>
+		</body>
+	</html>
 }
