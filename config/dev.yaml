@@ -1,0 +1,17 @@
+port: 5000
+redis:
+  url: redis://localhost:6379/0
+  addr: "127.0.0.1:6379"
+db:
+  host: localhost
+  name: breeze
+  user: postgres
+  password: postgres
+  port: 5432
+  timezone: Europe/Istanbul
+env: dev
+debug: false
+api:
+  url: "http://localhost:5000"
+web:
+  url: "http://localhost:3000"
