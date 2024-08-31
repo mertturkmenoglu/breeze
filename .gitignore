@@ -1,3 +1,6 @@
 tmp/
 .env
 **/node_modules/
+**/*_templ.go
+**/*_templ.txt
+internal/views/hello_templ.go

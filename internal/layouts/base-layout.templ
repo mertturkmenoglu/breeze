@@ -1,0 +1,33 @@
+package layouts
+
+import "breeze/internal/partials"
+
+templ Base(title string) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<meta
+				name="description"
+				content="Breeze"
+			/>
+			<meta name="google" content="notranslate"/>
+			<link rel="shortcut icon" href="/assets/img/icon.png" type="image/png"/>
+			<link rel="stylesheet" href="/assets/css/main.css" type="text/css"/>
+			<title>{ title }</title>
+			<script src="/assets/js/htmx.min.js"></script>
+		</head>
+		<body hx-boost="true" class="container mx-auto">
+			<header>
+				@partials.Navbar()
+			</header>
+			<main class="container my-8">
+				{ children... }
+			</main>
+			<footer>
+				@partials.Footer()
+			</footer>
+		</body>
+	</html>
+}
