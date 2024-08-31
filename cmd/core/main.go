@@ -48,6 +48,8 @@ func main() {
 
 	e := echo.New()
 
+	e.Static("/assets", "internal/assets")
+
 	e.GET("/", HelloHandler)
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", viper.GetInt(config.PORT))))
