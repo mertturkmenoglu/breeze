@@ -27,9 +27,12 @@ watch:
 sqlc-generate:
 	@sqlc generate
 
+templ-generate:
+	@templ generate
+
 create-migration:
 	@read -p "Give migration a name: " migrationname; \
 	migrate create -ext sql -dir internal/db/migrations -seq $$migrationname; \
 	echo "Created migration with name $$migrationname. Update sql files."
 
-.PHONY: all build run clean watch sqlc-generate create-migration
+.PHONY: all build run clean watch sqlc-generate templ-generate create-migration
