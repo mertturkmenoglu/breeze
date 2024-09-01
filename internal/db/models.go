@@ -3,3 +3,22 @@
 //   sqlc v1.27.0
 
 package db
+
+import (
+	"github.com/jackc/pgx/v5/pgtype"
+)
+
+type User struct {
+	ID                   string
+	Email                string
+	PasswordHash         string
+	Name                 string
+	Role                 string
+	PasswordResetToken   pgtype.Text
+	PasswordResetExpires pgtype.Timestamptz
+	LoginAttempts        pgtype.Int4
+	LockoutUntil         pgtype.Timestamptz
+	LastLogin            pgtype.Timestamptz
+	CreatedAt            pgtype.Timestamptz
+	UpdatedAt            pgtype.Timestamptz
+}
