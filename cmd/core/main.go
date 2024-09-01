@@ -4,6 +4,7 @@ import (
 	"breeze/config"
 	"breeze/internal/app"
 	"breeze/internal/db"
+	"breeze/internal/middlewares"
 	"fmt"
 	"os"
 
@@ -23,6 +24,9 @@ func main() {
 
 	e := echo.New()
 
+	e.Use(middlewares.PTermLogger)
+	e.Use(middlewares.GetSessionMiddleware())
+
 	e.Static("/assets", "internal/assets")
 
 	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
@@ -34,11 +38,18 @@ func main() {
 		CookieSecure:   true,
 	}))
 
-	e.GET("/", app.HomeHandler)
-	e.GET("/login", app.LoginHandler)
-	e.POST("/login", app.ApiLogin)
-	e.GET("/register", app.RegisterHandler)
-	e.POST("/register", app.ApiRegister)
+	db := db.NewDb()
+
+	h := app.New(db)
+
+	e.Use(middlewares.WithAuth)
+
+	e.GET("/", h.HomeHandler)
+	e.GET("/login", h.LoginHandler)
+	e.POST("/login", h.LoginPostHandler)
+	e.GET("/register", h.RegisterHandler)
+	e.POST("/register", h.RegisterPostHandler)
+	e.DELETE("/logout", h.LogoutHandler)
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", viper.GetInt(config.PORT))))
 }
