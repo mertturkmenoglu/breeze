@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/spf13/viper"
 )
 
@@ -24,10 +25,20 @@ func main() {
 
 	e.Static("/assets", "internal/assets")
 
+	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
+		TokenLength:    32,
+		TokenLookup:    "form:_csrf",
+		CookieName:     "csrf_token",
+		CookiePath:     "/",
+		CookieHTTPOnly: true,
+		CookieSecure:   true,
+	}))
+
 	e.GET("/", app.HomeHandler)
 	e.GET("/login", app.LoginHandler)
 	e.POST("/login", app.ApiLogin)
 	e.GET("/register", app.RegisterHandler)
+	e.POST("/register", app.ApiRegister)
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", viper.GetInt(config.PORT))))
 }
