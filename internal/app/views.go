@@ -38,3 +38,8 @@ func HomeHandler(c echo.Context) error {
 func LoginHandler(c echo.Context) error {
 	return Render(c, http.StatusOK, views.Login())
 }
+
+// GET /register
+func RegisterHandler(c echo.Context) error {
+	return Render(c, http.StatusOK, views.Register())
+}

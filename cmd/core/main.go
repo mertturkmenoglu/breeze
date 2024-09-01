@@ -27,6 +27,7 @@ func main() {
 	e.GET("/", app.HomeHandler)
 	e.GET("/login", app.LoginHandler)
 	e.POST("/login", app.ApiLogin)
+	e.GET("/register", app.RegisterHandler)
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", viper.GetInt(config.PORT))))
 }
