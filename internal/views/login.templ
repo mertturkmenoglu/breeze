@@ -8,7 +8,12 @@ templ Login() {
 			<a hx-swap="transition:true" href="/" class="flex justify-center my-16">
 				<img src="/assets/img/icon.png" class="size-8"/>
 			</a>
-			<form hx-post="/login" hx-target="#login-form" hx-swap="outerHTML" class="flex flex-col gap-4 border border-neutral-300 p-8 py-16 rounded-lg shadow-lg">
+			<form
+				hx-boost="true"
+				method="POST"
+				action="/login"
+				class="flex flex-col gap-4 border border-neutral-300 p-8 py-16 rounded-lg shadow-lg"
+			>
 				<div class="font-bold text-2xl text-center">Login to Breeze</div>
 				<div class="mt-8">
 					<label for="email" class="font-medium">Email</label>
