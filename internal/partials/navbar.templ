@@ -1,17 +1,24 @@
 package partials
 
-templ Navbar() {
+templ Navbar(isAuth bool, csrfToken string) {
 	<nav class="my-8 flex justify-between items-center">
 		<div>
-			<a hx-swap="transition:true" class="inline-flex items-center gap-4" href="/">
+			<a class="inline-flex items-center gap-4" href="/">
 				<img src="/assets/img/icon.png" class="size-8"/>
 				<div class="text-xl font-medium">Breeze</div>
 			</a>
 		</div>
 		<div class="navbar-end">
-			<a hx-swap="transition:true" class="text-lg bg-lime-500 text-lime-100 px-4 py-2 rounded-lg" href="/login">
-				Login
-			</a>
+			if isAuth {
+				<form hx-delete="/logout" _="on htmx:afterRequest[successful] js window.location.href = '/' end">
+					<input type="hidden" name="_csrf" value={ csrfToken }/>
+					<button class="text-lg bg-lime-500 text-lime-100 px-4 py-2 rounded-lg">Logout</button>
+				</form>
+			} else {
+				<a href="/login" hx-swap="transition:true" class="text-lg bg-lime-500 text-lime-100 px-4 py-2 rounded-lg">
+					Login
+				</a>
+			}
 		</div>
 	</nav>
 }
