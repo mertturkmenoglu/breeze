@@ -13,5 +13,10 @@ env: dev
 debug: false
 api:
   url: "http://localhost:5000"
+  auth:
+    sign-key: breeze
+    session:
+      path: "/"
+      max-age: 604800
 web:
   url: "http://localhost:3000"
