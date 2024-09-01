@@ -25,7 +25,7 @@ func Render(ctx echo.Context, statusCode int, t templ.Component) error {
 	return ctx.HTML(statusCode, buf.String())
 }
 
-func HelloHandler(c echo.Context) error {
+func HomeHandler(c echo.Context) error {
 	d := db.NewDb()
 
 	s, err := d.Queries.Dummy(c.Request().Context())
@@ -34,7 +34,11 @@ func HelloHandler(c echo.Context) error {
 		return err
 	}
 
-	return Render(c, http.StatusOK, views.Hello(s))
+	return Render(c, http.StatusOK, views.Home(s))
+}
+
+func LoginHandler(c echo.Context) error {
+	return Render(c, http.StatusOK, views.Login())
 }
 
 func main() {
@@ -50,7 +54,8 @@ func main() {
 
 	e.Static("/assets", "internal/assets")
 
-	e.GET("/", HelloHandler)
+	e.GET("/", HomeHandler)
+	e.GET("/login", LoginHandler)
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", viper.GetInt(config.PORT))))
 }
