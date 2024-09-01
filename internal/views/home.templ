@@ -1,0 +1,9 @@
+package views
+
+import "breeze/internal/layouts"
+
+templ Home(name string) {
+	@layouts.Base("Home") {
+		<div class="font-bold text-3xl">Hello { name } how you doing?</div>
+	}
+}
