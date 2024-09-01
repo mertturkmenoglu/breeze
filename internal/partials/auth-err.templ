@@ -1,0 +1,9 @@
+package partials
+
+templ AuthErr(errs []string) {
+	<div class="flex flex-col gap-4 border border-red-500 p-4 rounded-lg mt-8">
+		for _, err := range errs {
+			<div class="text-red-500 text-center">{ err }</div>
+		}
+	</div>
+}
