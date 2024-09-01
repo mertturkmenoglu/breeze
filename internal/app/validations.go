@@ -29,3 +29,7 @@ func isValidPassword(s string) bool {
 func isValidName(s string) bool {
 	return len(s) >= 2
 }
+
+func isValidLoginPassword(s string) bool {
+	return len(s) >= 1
+}
