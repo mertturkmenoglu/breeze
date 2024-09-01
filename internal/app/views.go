@@ -36,10 +36,12 @@ func HomeHandler(c echo.Context) error {
 
 // GET /login
 func LoginHandler(c echo.Context) error {
-	return Render(c, http.StatusOK, views.Login())
+	csrfToken := c.Get("csrf").(string)
+	return Render(c, http.StatusOK, views.Login(csrfToken))
 }
 
 // GET /register
 func RegisterHandler(c echo.Context) error {
-	return Render(c, http.StatusOK, views.Register())
+	csrfToken := c.Get("csrf").(string)
+	return Render(c, http.StatusOK, views.Register(csrfToken))
 }
