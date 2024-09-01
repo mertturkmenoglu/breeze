@@ -2,8 +2,8 @@ package views
 
 import "breeze/internal/layouts"
 
-templ Home(name string) {
-	@layouts.Base("Home") {
-		<div class="font-bold text-3xl">Hello { name } how you doing?</div>
+templ Home(name string, isAuth bool, csrfToken string) {
+	@layouts.Base("Home", isAuth, csrfToken) {
+		<div class="font-bold text-3xl">Hello { name }</div>
 	}
 }
