@@ -92,20 +92,18 @@ func (q *Queries) GetPageById(ctx context.Context, id string) (Page, error) {
 
 const getPages = `-- name: GetPages :many
 SELECT id, name, url, created_at, status, uptime, interval, last_checked FROM pages
-WHERE id = $1
 ORDER BY pages.created_at DESC
-OFFSET $2
-LIMIT $3
+OFFSET $1
+LIMIT $2
 `
 
 type GetPagesParams struct {
-	ID     string
 	Offset int32
 	Limit  int32
 }
 
 func (q *Queries) GetPages(ctx context.Context, arg GetPagesParams) ([]Page, error) {
-	rows, err := q.db.Query(ctx, getPages, arg.ID, arg.Offset, arg.Limit)
+	rows, err := q.db.Query(ctx, getPages, arg.Offset, arg.Limit)
 	if err != nil {
 		return nil, err
 	}

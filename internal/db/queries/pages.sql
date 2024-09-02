@@ -25,7 +25,6 @@ WHERE pages.id = $1 LIMIT 1;
 
 -- name: GetPages :many
 SELECT * FROM pages
-WHERE id = $1
 ORDER BY pages.created_at DESC
-OFFSET $2
-LIMIT $3;
+OFFSET $1
+LIMIT $2;
