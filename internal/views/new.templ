@@ -4,8 +4,82 @@ import "breeze/internal/layouts"
 
 templ New(csrfToken string) {
 	@layouts.Base("Add new page", true, csrfToken) {
-		<div>
-			add new page
+		<div class="flex flex-col mx-auto max-w-xl mt-4 items-center">
+			<h2 class="mt-4 scroll-m-20 text-3xl font-medium tracking-tight text-center">
+				Add new page to monitoring
+			</h2>
+			<form
+				class="w-full"
+				hx-swap="innerHTML"
+				hx-post="/new"
+				hx-target="#errs"
+			>
+				<input type="hidden" name="_csrf" value={ csrfToken }/>
+				<div class="mt-8">
+					<label for="name" class="font-medium">Name</label>
+					<input
+						id="name"
+						type="text"
+						name="name"
+						placeholder="Name of the website"
+						class="w-full px-4 py-2 rounded-lg border border-neutral-300"
+						required
+					/>
+				</div>
+				<div class="mt-8">
+					<label for="name" class="font-medium">URL</label>
+					<input
+						id="url"
+						type="url"
+						name="url"
+						placeholder="URL of the website"
+						class="w-full px-4 py-2 rounded-lg border border-neutral-300"
+						required
+					/>
+				</div>
+				<div class="mt-8 flex flex-col">
+					<label for="interval">Interval</label>
+					<select id="interval" name="interval" class="w-full px-4 py-2 rounded-lb border border-neutral-300" required>
+						<option value="" selected>Please choose an interval</option>
+						<option value="1">Every hour</option>
+						<option value="2">Every 2 hours</option>
+						<option value="3">Every 3 hours</option>
+						<option value="4">Every 4 hours</option>
+						<option value="6">Every 6 hours</option>
+						<option value="12">Every 12 hours</option>
+						<option value="24">Every day</option>
+					</select>
+				</div>
+				<button
+					type="submit"
+					class="w-full px-4 py-2 rounded-lg bg-lime-500 text-white mt-8"
+				>
+					Add new page
+				</button>
+			</form>
+			<div id="errs"></div>
 		</div>
+		<script>
+			function newPageEventHandler(event) {
+				const d = event.detail;
+				const isSuccess =
+					d.successful &&
+					d.xhr.responseText &&
+					d.xhr.getResponseHeader("Content-Type") === "application/json";
+				if (isSuccess) {
+					const response = JSON.parse(d.xhr.responseText);
+					if (response.redirect) {
+						document.removeEventListener("htmx:afterRequest", newPageEventHandler);
+						window.location.href = response.redirect;
+					}
+				}
+			}
+
+			document.addEventListener("htmx:afterRequest", newPageEventHandler);
+
+			window.addEventListener("DOMContentLoaded", () => {
+				document.addEventListener("htmx:afterRequest", newPageEventHandler);
+			});
+		</script>
 	}
 }
