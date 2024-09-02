@@ -9,40 +9,45 @@ func getHeaders() []string {
 templ Home(name string, isAuth bool, csrfToken string) {
 	@layouts.Base("Home", isAuth, csrfToken) {
 		<h2 class="mt-4 scroll-m-20 text-3xl font-medium tracking-tight">
-			Status
+			if isAuth {
+				Status
+			} else {
+				Login to see status
+			}
 		</h2>
-		<div class="relative w-full overflow-auto">
-			<table
-				class="w-full caption-bottom text-sm"
-			>
-				<caption class="mt-4 text-sm text-neutral-500">A list of services and monitoring status.</caption>
-				<thead class="[&_tr]:border-b">
-					<tr class="border-b transition-colors hover:bg-neutral-200/50 data-[state=selected]:bg-muted">
-						for _, header := range getHeaders() {
-							<th class="h-12 px-4 text-left align-middle font-medium text-neutral-500 [&:has([role=checkbox])]:pr-0">{ header }</th>
-						}
-					</tr>
-				</thead>
-				<tbody
-					class="[&_tr:last-child]:border-0"
+		if isAuth {
+			<div class="relative w-full overflow-auto">
+				<table
+					class="w-full caption-bottom text-sm"
 				>
-					<tr class="border-b transition-colors hover:bg-neutral-200/50 data-[state=selected]:bg-muted">
-						<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">Website</td>
-						<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">Up</td>
-						<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">{ `https://example.com` }</td>
-						<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">1h ago</td>
-						<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">4 days</td>
-						<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">Every 6 hours</td>
-						<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-							<div class="flex items-center gap-2">
-								<button class="btn btn-sm btn-neutral">Edit</button>
-								<button class="btn btn-sm btn-neutral">Delete</button>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="min-h-[600px]"></div>
+					<caption class="mt-4 text-sm text-neutral-500">A list of services and monitoring status.</caption>
+					<thead class="[&_tr]:border-b">
+						<tr class="border-b transition-colors hover:bg-neutral-200/50 data-[state=selected]:bg-muted">
+							for _, header := range getHeaders() {
+								<th class="h-12 px-4 text-left align-middle font-medium text-neutral-500 [&:has([role=checkbox])]:pr-0">{ header }</th>
+							}
+						</tr>
+					</thead>
+					<tbody
+						class="[&_tr:last-child]:border-0"
+					>
+						<tr class="border-b transition-colors hover:bg-neutral-200/50 data-[state=selected]:bg-muted">
+							<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">Website</td>
+							<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">Up</td>
+							<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">{ `https://example.com` }</td>
+							<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">1h ago</td>
+							<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">4 days</td>
+							<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">Every 6 hours</td>
+							<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
+								<div class="flex items-center gap-2">
+									<button class="btn btn-sm btn-neutral">Edit</button>
+									<button class="btn btn-sm btn-neutral">Delete</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		}
 	}
 }
