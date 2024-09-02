@@ -1,0 +1,11 @@
+package views
+
+import "breeze/internal/layouts"
+
+templ New(csrfToken string) {
+	@layouts.Base("Add new page", true, csrfToken) {
+		<div>
+			add new page
+		</div>
+	}
+}

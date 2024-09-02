@@ -223,3 +223,7 @@ func resetCookie() *http.Cookie {
 
 	return cookie
 }
+
+func (h *Handler) NewHandler(c echo.Context) error {
+	return Render(c, http.StatusOK, views.New(c.Get("csrf").(string)))
+}

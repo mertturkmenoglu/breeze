@@ -50,6 +50,7 @@ func main() {
 	e.GET("/register", h.RegisterHandler)
 	e.POST("/register", h.RegisterPostHandler)
 	e.DELETE("/logout", h.LogoutHandler)
+	e.GET("/new", h.NewHandler)
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", viper.GetInt(config.PORT))))
 }
