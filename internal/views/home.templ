@@ -2,6 +2,7 @@ package views
 
 import (
 	"breeze/internal/layouts"
+	"breeze/internal/partials"
 	"strconv"
 )
 
@@ -51,47 +52,52 @@ func getPageHref(id string) string {
 
 templ Home(name string, isAuth bool, csrfToken string, pages []Page) {
 	@layouts.Base("Home", isAuth, csrfToken) {
-		<h2 class="mt-4 scroll-m-20 text-3xl font-medium tracking-tight">
+		<div hx-get="/" hx-trigger="every 30s" hx-swap="innerHTML" hx-target="body">
+			<h2 class="mt-4 scroll-m-20 text-3xl font-medium tracking-tight flex items-center gap-4">
+				if isAuth {
+					<div>Status</div>
+					<div class="htmx-indicator text-lime-500 rounded-full">
+						@partials.RefreshCcwIcon()
+					</div>
+				} else {
+					Login to see status
+				}
+			</h2>
 			if isAuth {
-				Status
-			} else {
-				Login to see status
-			}
-		</h2>
-		if isAuth {
-			<div class="relative w-full overflow-auto">
-				<table
-					class="w-full caption-bottom text-sm"
-				>
-					<caption class="mt-4 text-sm text-neutral-500">A list of services and monitoring status.</caption>
-					<thead class="[&_tr]:border-b">
-						<tr class="border-b transition-colors hover:bg-neutral-200/50 data-[state=selected]:bg-muted">
-							for _, header := range getHeaders() {
-								<th class="h-12 px-4 text-left align-middle font-medium text-neutral-500 [&:has([role=checkbox])]:pr-0">{ header }</th>
-							}
-						</tr>
-					</thead>
-					<tbody
-						class="[&_tr:last-child]:border-0"
+				<div class="relative w-full overflow-auto">
+					<table
+						class="w-full caption-bottom text-sm"
 					>
-						for _, page := range pages {
+						<caption class="mt-4 text-sm text-neutral-500">A list of services and monitoring status.</caption>
+						<thead class="[&_tr]:border-b">
 							<tr class="border-b transition-colors hover:bg-neutral-200/50 data-[state=selected]:bg-muted">
-								<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">{ page.Name }</td>
-								<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">{ fmtStatus(page.Status) }</td>
-								<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">{ page.URL }</td>
-								<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">{ page.LastChecked }</td>
-								<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">{ page.Uptime }</td>
-								<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">{ getIntervalStr(page.Interval) }</td>
-								<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-									<div class="flex items-center gap-2">
-										<a href={ templ.SafeURL(getPageHref(page.ID)) } hx-swap="transition:true">Edit</a>
-									</div>
-								</td>
+								for _, header := range getHeaders() {
+									<th class="h-12 px-4 text-left align-middle font-medium text-neutral-500 [&:has([role=checkbox])]:pr-0">{ header }</th>
+								}
 							</tr>
-						}
-					</tbody>
-				</table>
-			</div>
-		}
+						</thead>
+						<tbody
+							class="[&_tr:last-child]:border-0"
+						>
+							for _, page := range pages {
+								<tr class="border-b transition-colors hover:bg-neutral-200/50 data-[state=selected]:bg-muted">
+									<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">{ page.Name }</td>
+									<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">{ fmtStatus(page.Status) }</td>
+									<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">{ page.URL }</td>
+									<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">{ page.LastChecked }</td>
+									<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">{ page.Uptime }</td>
+									<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">{ getIntervalStr(page.Interval) }</td>
+									<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
+										<div class="flex items-center gap-2">
+											<a href={ templ.SafeURL(getPageHref(page.ID)) } hx-swap="transition:true">Edit</a>
+										</div>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			}
+		</div>
 	}
 }
