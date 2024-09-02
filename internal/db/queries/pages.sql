@@ -28,3 +28,12 @@ SELECT * FROM pages
 ORDER BY pages.created_at DESC
 OFFSET $1
 LIMIT $2;
+
+-- name: GetPagesThatNeedChecking :many
+SELECT * FROM pages
+WHERE pages.status = 'NOT_CHECKED' OR pages.last_checked < NOW() - INTERVAL '1 hour';
+
+-- name: UpdatePageStatus :exec
+UPDATE pages
+SET status = $1, last_checked = NOW()
+WHERE id = $2;

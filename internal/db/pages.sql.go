@@ -130,3 +130,53 @@ func (q *Queries) GetPages(ctx context.Context, arg GetPagesParams) ([]Page, err
 	}
 	return items, nil
 }
+
+const getPagesThatNeedChecking = `-- name: GetPagesThatNeedChecking :many
+SELECT id, name, url, created_at, status, uptime, interval, last_checked FROM pages
+WHERE pages.status = 'NOT_CHECKED' OR pages.last_checked < NOW() - INTERVAL '1 hour'
+`
+
+func (q *Queries) GetPagesThatNeedChecking(ctx context.Context) ([]Page, error) {
+	rows, err := q.db.Query(ctx, getPagesThatNeedChecking)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Page
+	for rows.Next() {
+		var i Page
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Url,
+			&i.CreatedAt,
+			&i.Status,
+			&i.Uptime,
+			&i.Interval,
+			&i.LastChecked,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const updatePageStatus = `-- name: UpdatePageStatus :exec
+UPDATE pages
+SET status = $1, last_checked = NOW()
+WHERE id = $2
+`
+
+type UpdatePageStatusParams struct {
+	Status Pagestatus
+	ID     string
+}
+
+func (q *Queries) UpdatePageStatus(ctx context.Context, arg UpdatePageStatusParams) error {
+	_, err := q.db.Exec(ctx, updatePageStatus, arg.Status, arg.ID)
+	return err
+}
