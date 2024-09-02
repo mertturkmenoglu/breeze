@@ -661,6 +661,11 @@ video {
   height: 2rem;
 }
 
+.size-2 {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
 .h-12 {
   height: 3rem;
 }
@@ -717,6 +722,10 @@ video {
   border-radius: 0.5rem;
 }
 
+.rounded-full {
+  border-radius: 9999px;
+}
+
 .border {
   border-width: 1px;
 }
@@ -743,6 +752,11 @@ video {
 .bg-lime-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(132 204 22 / var(--tw-bg-opacity));
+}
+
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
 }
 
 .p-2 {
