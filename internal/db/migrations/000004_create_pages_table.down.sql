@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS pages;
+
+DROP TYPE IF EXISTS PageStatus;
