@@ -3,8 +3,10 @@ package main
 import (
 	"breeze/config"
 	"breeze/internal/app"
+	"breeze/internal/cron"
 	"breeze/internal/db"
 	"breeze/internal/middlewares"
+	"breeze/internal/tasks"
 	"fmt"
 	"os"
 
@@ -22,6 +24,13 @@ func main() {
 		db.RunMigrations()
 	}
 
+	db := db.NewDb()
+
+	ts := tasks.New(db)
+
+	go ts.Run()
+	defer ts.Close()
+
 	e := echo.New()
 
 	e.Use(middlewares.PTermLogger)
@@ -38,8 +47,6 @@ func main() {
 		CookieSecure:   true,
 	}))
 
-	db := db.NewDb()
-
 	h := app.New(db)
 
 	e.Use(middlewares.WithAuth)
@@ -52,6 +59,9 @@ func main() {
 	e.DELETE("/logout", h.LogoutHandler)
 	e.GET("/new", h.NewHandler)
 	e.POST("/new", h.NewPostHandler)
+
+	scheduler := cron.New()
+	scheduler.Start()
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", viper.GetInt(config.PORT))))
 }
