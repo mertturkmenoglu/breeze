@@ -3,13 +3,16 @@ package partials
 templ Navbar(isAuth bool, csrfToken string) {
 	<nav class="my-8 flex justify-between items-center">
 		<div>
-			<a class="inline-flex items-center gap-4" href="/">
+			<a href="/" hx-swap="transition:true" class="inline-flex items-center gap-4">
 				<img src="/assets/img/icon.png" class="size-8"/>
 				<div class="text-xl font-medium">Breeze</div>
 			</a>
 		</div>
-		<div class="navbar-end">
+		<div class="navbar-end flex items-center gap-4">
 			if isAuth {
+				<a href="/new" hx-swap="transition:true" class="text-lg border border-lime-500 px-4 py-2 rounded-lg hover:bg-lime-500/10">
+					New
+				</a>
 				<form hx-delete="/logout" _="on htmx:afterRequest[successful] js window.location.href = '/' end">
 					<input type="hidden" name="_csrf" value={ csrfToken }/>
 					<button class="text-lg bg-lime-500 text-lime-100 px-4 py-2 rounded-lg">Logout</button>
